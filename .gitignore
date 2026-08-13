@@ -1,0 +1,43 @@
+# dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# testing
+coverage/
+
+# next.js build output
+.next/
+out/
+build/
+
+# misc
+.DS_Store
+*.pem
+
+# debug logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# local environment variables
+.env*.local
+.env
+
+# deployment cache
+.vercel
+.netlify
+
+# typescript build cache
+*.tsbuildinfo
+
+# python virtual environments & cache
+venv/
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.db
+*.sqlite3
