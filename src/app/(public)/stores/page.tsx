@@ -4,9 +4,14 @@ import { Store, Star, ArrowRight, ShieldCheck } from "lucide-react";
 import { db } from "@/lib/db";
 
 export default async function StoresPage() {
-  const sellers = await db.seller.findMany({
-    include: { _count: { select: { products: true } } },
-  });
+  let sellers: any[] = [];
+  try {
+    sellers = await db.seller.findMany({
+      include: { _count: { select: { products: true } } },
+    });
+  } catch (err) {
+    console.error("StoresPage database fetch error:", err);
+  }
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">

@@ -1,91 +1,116 @@
-# NEXORA — AI Commerce & Vendor Intelligence Platform
+# ShopSwift — 10-Minute Quick Commerce & Multi-Vendor E-Commerce Platform
 
-> **"Commerce that thinks ahead."**
-
-NEXORA is a production-quality multi-vendor AI e-commerce platform built with **Next.js 15 (App Router)**, **TypeScript**, **Tailwind CSS**, and **Prisma + SQLite/PostgreSQL**. All AI/ML, natural language search, voice recognition, recommendation scoring, and inventory prediction capabilities are implemented locally — **no external paid API keys required**.
-
----
-
-## 🌟 Key Features
-
-1. **Natural Language Search (NLP)**  
-   - Custom deterministic NLP engine (`searchUnderstandingService.ts`) extracts intent, budget limits (e.g. *"under 2500"*), colors, brands, and categories from natural queries.
-
-2. **Web Speech Voice Search**  
-   - Browser-native Web Speech API microphone search modal with real-time waveform animation and auto-submission.
-
-3. **AI Product Recommendation Engine**  
-   - Multi-factor recommendation matrix balancing Content Similarity (35%), User Behavior (30%), Popularity (20%), Rating (10%), and Freshness (5%).
-
-4. **Multi-Vendor Order Splitting**  
-   - Single customer checkouts automatically split into parent and merchant-specific sub-orders with independent status management.
-
-5. **AI Inventory Intelligence & Demand Forecasting**  
-   - Statistical moving average model predicts 7-day and 30-day product demand, stock-out timelines, and automated reorder alerts for sellers.
-
-6. **AI Product Copywriter & SEO Generator**  
-   - Local template engine generates short/long descriptions, bullet points, SEO meta titles, and keywords from product specs.
-
-7. **Local Payment Simulator**  
-   - Complete checkout simulator supporting instant simulated UPI (GPay/PhonePe), Credit/Debit Card, and Cash on Delivery with full signature verification and status transitions.
-
-8. **RBAC Security & Fraud Risk Scoring**  
-   - Server-side role-based access control (CUSTOMER, SELLER, ADMIN, DELIVERY_PARTNER) and risk scoring for orders exceeding suspicious threshold combinations.
+> **Hackathon Submission**  
+> **Team Name:** Cold Forge  
+> **Team Members:**  
+> - **Chandhini S** — Frontend Developer  
+> - **Ashok Kumar S** — Backend Developer  
 
 ---
 
-## 🔑 Seeded Demo Credentials (Instant Login)
+## 🏆 Project Statement & Guidelines
 
-| Role | Email | Password | Access |
-|---|---|---|---|
-| **Admin** | `admin@nexora.in` | `Admin@123` | Platform GMV, Governance, Audit Logs |
-| **Seller** | `seller.tech@nexora.in` | `Password@123` | TechVerse Storefront, AI Copywriter, Inventory |
-| **Customer** | `customer1@nexora.in` | `Password@123` | Shopping, Cart, Checkout, Order Tracking |
+Shortlisted participants will build a functional solution to an assigned problem statement within a fixed time window.
+Problem statements will be released at the start of the round and will not be disclosed in advance.
+Submissions must include working source code (GitHub repository) and a deployed build or installable package (APK for Android applications, TestFlight link for iOS applications) as applicable. Web-hosted demo links alone will not be accepted for mobile-based problem statements.
+Evaluation will be based on functionality, technical execution, UI/UX quality, innovation, and adherence to the problem statement.
+Use of pre-built templates or previously developed codebases beyond permitted boilerplate is strictly prohibited and will result in disqualification.
+Teams found submitting incomplete, non-functional, or non-compliant builds will be eliminated from further rounds.
 
 ---
 
-## 🚀 Quick Start (Local Execution)
+## 📌 Project Overview
 
+**ShopSwift** (powered by **Chanbo AI Assistant**) is a production-grade full-stack e-commerce and 10–30 minute quick-commerce platform built with Next.js 15+, React 19, TypeScript, Vanilla CSS & Tailwind CSS, Python FastAPI, and SQLAlchemy ORM with persistent SQLite database engine.
+
+---
+
+## 🚀 Quick Start Commands
+
+### macOS / Linux
 ```bash
-# 1. Install dependencies
-npm install
-
-# 2. Push database schema (creates local SQLite database prisma/dev.db)
-npx prisma db push
-
-# 3. Seed sample marketplace data (40+ products, 5 sellers, 20 customers, 11 categories)
-npx ts-node prisma/seed.ts
-
-# 4. Start Next.js development server
-npm run dev
+./start_app.sh
 ```
 
-Visit [http://localhost:3000](http://localhost:3000) in your browser.
-
----
-
-## 🏗️ Project Architecture
-
+### Windows
+```cmd
+start_app.bat
 ```
-Smart_Multi_Vender_E-Commerce-DevFusion/
-├── prisma/
-│   ├── schema.prisma       # Relational models & SQLite configuration
-│   └── seed.ts             # 100+ items seed script
-├── src/
-│   ├── ai/                 # Local AI & ML Engines
-│   │   ├── nlp/            # Natural Language Search Parser
-│   │   ├── recommendation/ # Multi-factor Recommendation Engine
-│   │   ├── descriptions/   # AI Product Description Generator
-│   │   ├── inventory/      # Demand Forecasting & Stock-out Alerts
-│   │   └── security/       # Order Fraud Risk Scoring
-│   ├── app/                # Next.js App Router (Public, Auth, Customer, Seller, Admin)
-│   ├── components/         # Reusable UI & Navbar & Voice Search Modal
-│   ├── lib/                # Auth (JWT & Bcrypt), DB client, Zod schemas, Utils
-│   └── services/           # Products, Cart, Orders, Payments, Shipping
-└── package.json
+
+### Alternative NPM Command
+```bash
+npm run start:all
 ```
 
 ---
 
-## 📜 License
-Developed for Hackathon Demonstration. All rights reserved.
+## 🤖 Chanbo AI Shopping Assistant
+
+ShopSwift features **Chanbo AI Assistant**, an integrated AI shopping guide capable of:
+- **Budget Planning**: Recommending family dinner bundles under ₹1,000.
+- **Express Snacks Recommendation**: Curating 10-minute quick delivery items.
+- **One-Click Bundle Add-to-Cart**: Adding recommended bundle items with item-specific images and pricing directly into your cart.
+
+---
+
+## 💳 Razorpay Payment Gateway Integration Guide
+
+### 1. Obtaining Razorpay Test Mode Keys
+1. Sign up or log into [Razorpay Dashboard](https://dashboard.razorpay.com).
+2. Switch to **Test Mode** from the top menu bar.
+3. Go to **Settings -> API Keys -> Generate Test Key**.
+4. Copy your `Key ID` and `Key Secret`.
+
+### 2. Environment Variables (.env)
+Create or update `.env` in the root directory:
+```env
+NEXT_PUBLIC_RAZORPAY_KEY_ID="rzp_test_xxxxxxxxx"
+RAZORPAY_KEY_ID="rzp_test_xxxxxxxxx"
+RAZORPAY_KEY_SECRET="your_razorpay_key_secret"
+RAZORPAY_WEBHOOK_SECRET="your_razorpay_webhook_secret"
+```
+
+### 3. Setting Up Webhooks
+In Razorpay Dashboard:
+1. Go to **Settings -> Webhooks -> Add New Webhook**.
+2. Set Webhook URL: `http://localhost:3000/api/payments/webhook` (or your public ngrok / production URL).
+3. Set Secret: `RAZORPAY_WEBHOOK_SECRET` value from `.env`.
+4. Select Events:
+   - `payment.authorized`
+   - `payment.captured`
+   - `payment.failed`
+   - `refund.created`
+   - `refund.processed`
+   - `refund.failed`
+
+### 4. Razorpay Payment & Order Flow Architecture
+```
+Customer -> Cart -> Checkout (/checkout) -> /api/payments/create-order -> Razorpay SDK -> Customer Pays -> Server Verification (/api/payments/verify) -> Payment CAPTURED -> Order CONFIRMED
+```
+
+### 5. Switching to Production Mode
+1. Replace `rzp_test_...` with Live Key ID (`rzp_live_...`) and Live Key Secret in `.env`.
+2. Update Webhook URL to production HTTPS domain in Razorpay Dashboard.
+
+---
+
+## 🔑 Demo Account Credentials
+
+| Role | Email Address | Password | Dashboard Route |
+| :--- | :--- | :--- | :--- |
+| **Customer** | `customer1@shopswift.in` | `Password@123` | Cart, Checkout, Wishlist, Orders (`/account/orders`) |
+| **Customer (Alt)** | `customer@shopswift.in` | `password123` | Cart, Profile (`/account`) |
+| **Seller / Merchant** | `seller@shopswift.in` | `password123` | Seller Dashboard (`/seller`), Products, Orders |
+| **Delivery Partner** | `delivery@shopswift.in` | `password123` | Delivery App (`/delivery`), OTP `1234` |
+| **Admin** | `admin@shopswift.in` | `Admin@123` | Admin Reconciliation Dashboard (`/admin/orders`) |
+
+---
+
+## 🛠️ API Endpoints Summary
+
+- **Create Razorpay Order**: `POST /api/payments/create-order`
+- **Verify Signature**: `POST /api/payments/verify`
+- **Webhook Handler**: `POST /api/payments/webhook`
+- **Authorize Refund**: `POST /api/payments/refund`
+- **Products Catalog**: `GET /api/products`
+- **Cart Operations**: `GET /api/cart`, `POST /api/cart/add`, `POST /api/cart/remove`

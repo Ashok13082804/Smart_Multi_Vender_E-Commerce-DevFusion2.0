@@ -9,20 +9,31 @@ export default async function SellerDashboardPage() {
   const session = await getSession();
   const sellerId = session?.sellerId;
 
-  const [products, sellerOrders, insights] = await Promise.all([
-    db.product.findMany({
-      where: sellerId ? { sellerId } : {},
-      take: 5,
-      orderBy: { createdAt: "desc" },
-    }),
-    db.sellerOrder.findMany({
-      where: sellerId ? { sellerId } : {},
-      take: 5,
-      orderBy: { createdAt: "desc" },
-      include: { order: { include: { customer: true } } },
-    }),
-    calculateInventoryInsights(sellerId),
-  ]);
+  let products: any[] = [];
+  let sellerOrders: any[] = [];
+  let insights: any[] = [];
+
+  try {
+    const res = await Promise.all([
+      db.product.findMany({
+        where: sellerId ? { sellerId } : {},
+        take: 5,
+        orderBy: { createdAt: "desc" },
+      }),
+      db.sellerOrder.findMany({
+        where: sellerId ? { sellerId } : {},
+        take: 5,
+        orderBy: { createdAt: "desc" },
+        include: { order: { include: { customer: true } } },
+      }),
+      calculateInventoryInsights(sellerId),
+    ]);
+    products = res[0];
+    sellerOrders = res[1];
+    insights = res[2];
+  } catch (err) {
+    console.error("SellerDashboardPage DB fetch error:", err);
+  }
 
   const totalRevenue = sellerOrders.reduce((acc, o) => acc + o.total, 0);
   const criticalInsights = insights.filter((i) => i.status === "CRITICAL" || i.status === "LOW");

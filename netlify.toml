@@ -1,0 +1,17 @@
+[build]
+  command = "npx prisma generate && npm run build"
+  publish = ".next"
+
+[build.environment]
+  NODE_VERSION = "20.x"
+  PRISMA_CLI_BINARY_TARGETS = "native,rhel-openssl-3.0.x"
+
+[functions]
+  included_files = [
+    "prisma/**",
+    "node_modules/@prisma/client/**",
+    "node_modules/.prisma/client/**"
+  ]
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"

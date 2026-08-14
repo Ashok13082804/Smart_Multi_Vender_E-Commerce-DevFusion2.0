@@ -31,11 +31,16 @@ export default async function ProductDetailPage({
   const discountPct = calculateDiscountPercentage(product.originalPrice, product.price);
 
   // Fetch similar products in same category
-  const similarProducts = await db.product.findMany({
-    where: { categoryId: product.categoryId, id: { not: product.id } },
-    take: 4,
-    include: { category: true, seller: true },
-  });
+  let similarProducts: any[] = [];
+  try {
+    similarProducts = await db.product.findMany({
+      where: { categoryId: product.categoryId, id: { not: product.id } },
+      take: 4,
+      include: { category: true, seller: true },
+    });
+  } catch (err) {
+    console.error("ProductDetailPage DB fetch error:", err);
+  }
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-12">

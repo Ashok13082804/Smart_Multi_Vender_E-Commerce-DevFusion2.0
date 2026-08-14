@@ -14,15 +14,24 @@ export default async function ProductsPage({
   const category = resolvedParams.category;
   const sort = resolvedParams.sort || "latest";
 
-  const [categories, productData] = await Promise.all([
-    db.category.findMany(),
-    getProducts({
-      query: q,
-      categorySlug: category,
-      sortBy: sort as any,
-      limit: 16,
-    }),
-  ]);
+  let categories: any[] = [];
+  let productData = { products: [] as any[], total: 0, page: 1, totalPages: 0, parsedNlp: null as any };
+
+  try {
+    const res = await Promise.all([
+      db.category.findMany(),
+      getProducts({
+        query: q,
+        categorySlug: category,
+        sortBy: sort as any,
+        limit: 16,
+      }),
+    ]);
+    categories = res[0];
+    productData = res[1];
+  } catch (err) {
+    console.error("ProductsPage database fetch error:", err);
+  }
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">

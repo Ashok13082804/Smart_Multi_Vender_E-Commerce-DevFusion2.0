@@ -10,15 +10,20 @@ export default async function StoreDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const seller = await db.seller.findUnique({
-    where: { slug },
-    include: {
-      products: {
-        where: { isActive: true },
-        include: { category: true, seller: true },
+  let seller: any = null;
+  try {
+    seller = await db.seller.findUnique({
+      where: { slug },
+      include: {
+        products: {
+          where: { isActive: true },
+          include: { category: true, seller: true },
+        },
       },
-    },
-  });
+    });
+  } catch (err) {
+    console.error("StoreDetailPage database fetch error:", err);
+  }
 
   if (!seller) {
     notFound();
@@ -69,7 +74,7 @@ export default async function StoreDetailPage({
 
         {seller.products.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {seller.products.map((product) => (
+            {seller.products.map((product: any) => (
               <ProductCard key={product.id} product={product as any} />
             ))}
           </div>

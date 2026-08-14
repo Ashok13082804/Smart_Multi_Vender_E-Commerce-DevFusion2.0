@@ -4,10 +4,15 @@ import { db } from "@/lib/db";
 import ProductCard from "@/components/product/ProductCard";
 
 export default async function DealsPage() {
-  const deals = await db.product.findMany({
-    where: { isFlashDeal: true, isActive: true },
-    include: { category: true, seller: true },
-  });
+  let deals: any[] = [];
+  try {
+    deals = await db.product.findMany({
+      where: { isFlashDeal: true, isActive: true },
+      include: { category: true, seller: true },
+    });
+  } catch (err) {
+    console.error("DealsPage database fetch error:", err);
+  }
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">

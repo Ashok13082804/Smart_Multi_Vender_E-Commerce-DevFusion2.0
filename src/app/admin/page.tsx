@@ -7,21 +7,36 @@ import { formatCurrency, formatDate } from "@/lib/utils";
 export default async function AdminDashboardPage() {
   const session = await getSession();
 
-  const [usersCount, sellers, orders, products, highRiskOrders] = await Promise.all([
-    db.user.count(),
-    db.seller.findMany({ include: { user: true }, take: 6 }),
-    db.order.findMany({
-      orderBy: { createdAt: "desc" },
-      take: 6,
-      include: { customer: true },
-    }),
-    db.product.count(),
-    db.order.findMany({
-      where: { riskLevel: { in: ["MEDIUM", "HIGH"] } },
-      take: 3,
-      include: { customer: true },
-    }),
-  ]);
+  let usersCount = 0;
+  let sellers: any[] = [];
+  let orders: any[] = [];
+  let products = 0;
+  let highRiskOrders: any[] = [];
+
+  try {
+    const res = await Promise.all([
+      db.user.count(),
+      db.seller.findMany({ include: { user: true }, take: 6 }),
+      db.order.findMany({
+        orderBy: { createdAt: "desc" },
+        take: 6,
+        include: { customer: true },
+      }),
+      db.product.count(),
+      db.order.findMany({
+        where: { riskLevel: { in: ["MEDIUM", "HIGH"] } },
+        take: 3,
+        include: { customer: true },
+      }),
+    ]);
+    usersCount = res[0];
+    sellers = res[1];
+    orders = res[2];
+    products = res[3];
+    highRiskOrders = res[4];
+  } catch (err) {
+    console.error("AdminDashboardPage DB fetch error:", err);
+  }
 
   const totalGMV = orders.reduce((sum, o) => sum + o.totalAmount, 0);
 

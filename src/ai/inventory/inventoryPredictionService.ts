@@ -15,20 +15,21 @@ export interface InventoryInsight {
 }
 
 export async function calculateInventoryInsights(sellerId?: string): Promise<InventoryInsight[]> {
-  const products = await db.product.findMany({
-    where: sellerId ? { sellerId, isActive: true } : { isActive: true },
-    include: {
-      orderItems: {
-        include: { order: true },
-        where: {
-          order: {
-            createdAt: { gte: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000) }, // Last 30 days
-            status: { not: "CANCELLED" },
+  try {
+    const products = await db.product.findMany({
+      where: sellerId ? { sellerId, isActive: true } : { isActive: true },
+      include: {
+        orderItems: {
+          include: { order: true },
+          where: {
+            order: {
+              createdAt: { gte: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000) }, // Last 30 days
+              status: { not: "CANCELLED" },
+            },
           },
         },
       },
-    },
-  });
+    });
 
   return products.map((product) => {
     // Total units sold in last 30 days
@@ -78,4 +79,8 @@ export async function calculateInventoryInsights(sellerId?: string): Promise<Inv
       aiAlertMessage,
     };
   });
+} catch (error) {
+    console.error("Error in calculateInventoryInsights:", error);
+    return [];
+  }
 }

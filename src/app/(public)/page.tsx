@@ -18,21 +18,33 @@ import { db } from "@/lib/db";
 import ProductCard from "@/components/product/ProductCard";
 
 export default async function HomePage() {
-  // Fetch real featured products & flash deals
-  const [featuredProducts, flashDeals, categories, sellers] = await Promise.all([
-    db.product.findMany({
-      where: { isFeatured: true, isActive: true },
-      take: 8,
-      include: { category: true, seller: true },
-    }),
-    db.product.findMany({
-      where: { isFlashDeal: true, isActive: true },
-      take: 4,
-      include: { category: true, seller: true },
-    }),
-    db.category.findMany({ take: 8 }),
-    db.seller.findMany({ take: 4 }),
-  ]);
+  let featuredProducts: any[] = [];
+  let flashDeals: any[] = [];
+  let categories: any[] = [];
+  let sellers: any[] = [];
+
+  try {
+    const res = await Promise.all([
+      db.product.findMany({
+        where: { isFeatured: true, isActive: true },
+        take: 8,
+        include: { category: true, seller: true },
+      }),
+      db.product.findMany({
+        where: { isFlashDeal: true, isActive: true },
+        take: 4,
+        include: { category: true, seller: true },
+      }),
+      db.category.findMany({ take: 8 }),
+      db.seller.findMany({ take: 4 }),
+    ]);
+    featuredProducts = res[0];
+    flashDeals = res[1];
+    categories = res[2];
+    sellers = res[3];
+  } catch (err) {
+    console.error("HomePage database fetch error:", err);
+  }
 
   return (
     <div className="space-y-16 pb-16">
