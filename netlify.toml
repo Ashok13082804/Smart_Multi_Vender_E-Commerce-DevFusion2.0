@@ -3,7 +3,7 @@
   publish = ".next"
 
 [build.environment]
-  NODE_VERSION = "20.x"
+  NODE_VERSION = "20"
   PRISMA_CLI_BINARY_TARGETS = "native,rhel-openssl-3.0.x"
 
 [functions]
